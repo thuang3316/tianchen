@@ -1,13 +1,231 @@
 <!doctype html>
-<html>
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="/src/style.css" rel="stylesheet">
+  <title>Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <link href="./src/style.css" rel="stylesheet">
 </head>
 <body>
-  <h1 class="text-3xl font-bold underline">
-    Hello world!
-  </h1>
+  <div class="container">
+
+    <nav>
+      <span class="nav-name">Home</span>
+      <div class="nav-links">
+        <a href="">About</a>
+        <a href="./src/pages/projects.html">Projects</a>
+        <a href="./src/pages/index-zh.html">中文</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="theme-icon">☀</span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="accordion" id="accordion">
+
+      <!-- About -->
+      <div class="card active">
+        <div class="card-inner">
+          <div class="card-header">
+            <h2 class="card-title">About <em>me</em></h2>
+            <a href="./src/pages/description.html" class="more-link">More ↗</a>
+          </div>
+          <div class="card-body">
+            <p class="bio">
+              Hello! My name is Tianchen Huang. 
+              I'm a full stack developer currently pursuing a career as a software engineer.
+              I love building large projects from scratch and enjoy the process of putting all parts together.
+            </p>
+            <div class="tags">
+              <span class="tag">Frontend</span>
+              <span class="tag">Backend</span>
+              <span class="tag">JavaScript</span>
+              <span class="tag">NodeJS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projects -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <h2 class="card-title">Projects</h2>
+            <a href="./src/pages/projects.html" class="more-link">More ↗</a>
+          </div>
+          <div class="card-body">
+            <p class="projects-desc">
+              I build across the full stack — from polished frontends with thoughtful UX
+              to backend systems designed for reliability and scale.
+            </p>
+            <div class="project-list">
+              <a href="#" class="project-item">
+                <span class="project-name">Shopping List</span>
+                <span class="project-tag">React, Async JS</span>
+                <span class="arrow">→</span>
+              </a>
+              <a href="#" class="project-item">
+                <span class="project-name">Personal Blog</span>
+                <span class="project-tag">ExpressJS, PostgreSQL</span>
+                <span class="arrow">→</span>
+              </a>
+              <a href="#" class="project-item">
+                <span class="project-name">CV Generator</span>
+                <span class="project-tag">html2pdf, Vite</span>
+                <span class="arrow">→</span>
+              </a>
+              <a href="#" class="project-item">
+                <span class="project-name">Battleship</span>
+                <span class="project-tag">Javascript, Game</span>
+                <span class="arrow">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <h2 class="card-title">Contact</h2>
+          </div>
+          <div class="card-body contact-body">
+            <div class="contact-left">
+              <p class="contact-blurb">
+                Have an idea, a question, or just want to say hello?
+                My inbox is always open. I try to respond within a day or two.
+              </p>
+              <div class="contact-list">
+                <a href="mailto:tchuang1005@gmail.com" class="contact-item">
+                  <span class="contact-icon">✉</span>
+                  <div class="divider"></div>
+                  <span class="contact-handle">tchuang1005@gmail.com</span>
+                </a>
+                <a href="https://github.com/thuang3316" class="contact-item" target="_blank">
+                  <i class="devicon-github-original"></i>
+                  <div class="divider"></div>
+                  <span class="contact-handle">github/thuang3316</span>
+                </a>
+                <a href="https://www.linkedin.com/in/tianchen-huang-7a399b324/" class="contact-item" target="_blank">
+                  <i class="devicon-linkedin-plain colored"></i>
+                  <div class="divider"></div>
+                  <span class="contact-handle">linkedin/tianchen-huang</span>
+                </a>
+              </div>
+            </div>
+            <div class="contact-right">
+              <div class="availability-card">
+                <div class="avail-dot"></div>
+                <div>
+                  <div class="avail-label">Currently available for</div>
+                  <div class="avail-items">
+                    <span class="avail-tag">Internships</span>
+                    <span class="avail-tag">Full-time roles</span>
+                    <span class="avail-tag">Project Collaboration</span>
+                  </div>
+                </div>
+              </div>
+              <div class="location-card">
+                <span class="location-icon">◎</span>
+                <div>
+                  <div class="location-city">Baltimore, MD</div>
+                  <div class="location-time" id="localTime">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>© 2026 Tianchen Huang </footer>
+
+  </div>
+
+  <script>
+    const COLLAPSED_H = 72; 
+    const DURATION    = 360; 
+
+    const cards = document.querySelectorAll('.card');
+    let activeCard = cards[0];
+    let animating  = false;
+
+    function getExpandedHeight(card) {
+      card.style.overflow = 'visible';
+      card.style.height   = 'auto';
+      const h = card.scrollHeight;
+      card.style.overflow = 'hidden';
+      return h;
+    }
+
+    function collapse(card) {
+      card.style.height   = card.scrollHeight + 'px'; 
+      card.classList.remove('active');
+      card.offsetHeight;
+      card.style.height = COLLAPSED_H + 'px';
+    }
+
+    function expand(card) {
+      const targetH = getExpandedHeight(card);
+      card.style.height = COLLAPSED_H + 'px';
+      card.classList.add('active');
+      card.offsetHeight; 
+      card.style.height = targetH + 'px';
+
+      const tid = setTimeout(() => {
+        card.style.height   = 'auto';
+        card.style.overflow = 'visible';
+      }, DURATION);
+      card._expandTimer = tid;
+    }
+
+    function setActive(card) {
+      if (card === activeCard || animating) return;
+      animating = true;
+      clearTimeout(activeCard._expandTimer);
+
+      collapse(activeCard);
+      expand(card);
+      activeCard = card;
+
+      setTimeout(() => { animating = false; }, DURATION);
+    }
+
+    cards.forEach(card => {
+      if (card === activeCard) {
+        card.style.height   = 'auto';
+        card.style.overflow = 'visible';
+      } else {
+        card.style.height   = COLLAPSED_H + 'px';
+        card.style.overflow = 'hidden';
+      }
+      card.addEventListener('mouseenter', () => setActive(card));
+    });
+
+    const html = document.documentElement;
+    const btn  = document.getElementById('themeToggle');
+    const icon = btn.querySelector('.theme-icon');
+
+    btn.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      icon.textContent = isDark ? '☀' : '☾';
+    });
+
+    function updateTime() {
+      const el = document.getElementById('localTime');
+      if (!el) return;
+      el.textContent = new Date().toLocaleTimeString('en-US', {
+        hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short'
+      });
+    }
+    updateTime();
+    setInterval(updateTime, 1000);
+  </script>
 </body>
 </html>

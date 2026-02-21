@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <style>
+    /* ── RESET & TOKENS (mirrors index) ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root, [data-theme="light"] {
+      --bg: #f7f5f0;
+      --surface: #ffffff;
+      --border: #e2ddd6;
+      --text: #1a1814;
+      --muted: #8c8279;
+      --accent: #c9472b;
+      --accent-light: #f5ede9;
+      --shadow: rgba(201, 71, 43, 0.07);
+    }
+
+    [data-theme="dark"] {
+      --bg: #141210;
+      --surface: #1e1b18;
+      --border: #2e2924;
+      --text: #ede8e1;
+      --muted: #7a6f65;
+      --accent: #e05c3a;
+      --accent-light: #2a1a14;
+      --shadow: rgba(224, 92, 58, 0.1);
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    /* Grain texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.5;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      width: 75%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    /* ── NAV (identical to index) ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    .nav-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--accent); }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      transition: all 0.2s;
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── SHARED CARD SHELL ── */
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      padding: 2rem;
+      transition: background 0.3s, border-color 0.3s;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .card:nth-child(2) { animation-delay: 0.08s; }
+    .card:nth-child(3) { animation-delay: 0.16s; }
+
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .intro-image-wrap {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      /* border: 1px solid var(--border); */
+      aspect-ratio: 3 / 4;
+    }
+
+    .intro-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    .intro-image-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 30%;
+      background: linear-gradient(to top, rgba(201,71,43,0.08), transparent);
+      pointer-events: none;
+    }
+
+    .intro-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .intro-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.6rem;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .intro-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .intro-role {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-left: 2px solid var(--accent);
+      padding-left: 0.75rem;
+    }
+
+    .intro-bio {
+      font-size: 0.82rem;
+      line-height: 1.95;
+      color: var(--muted);
+    }
+
+    .intro-bio p + p { margin-top: 0.85rem; }
+
+    .intro-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.2s;
+    }
+
+    .meta-item:hover { border-color: var(--accent); }
+
+    .meta-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .meta-value {
+      font-size: 0.78rem;
+      color: var(--text);
+    }
+
+    .intro-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 0.25rem 0.55rem;
+      border-radius: 4px;
+    }
+
+    .skills-groups {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .skill-group-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skill-icons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .skill-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.75rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      cursor: default;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+      min-width: 72px;
+    }
+
+    .skill-item:hover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      transform: translateY(-2px);
+    }
+
+    .skill-item i {
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+
+    .skill-item span {
+      font-size: 0.6rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      padding: 0.5rem 0;
+      animation: fadeUp 0.6s ease 0.3s both;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .container { width: 100%; }
+      .intro-grid { grid-template-columns: 1fr; }
+      .intro-image-wrap { aspect-ratio: 4 / 3; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- NAV -->
+    <nav>
+      <a href="../../index.html" class="nav-name">Home</a>
+      <div class="nav-links">
+        <a href="" class="active">About</a>
+        <a href="./projects.html">Projects</a>
+        <a href="./description-zh.html">中文</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="theme-icon">☀</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ── SECTION 1: INTRO ── -->
+    <div class="card">
+      <p class="section-label">Introduction</p>
+      <div class="intro-grid">
+
+        <div class="intro-image-wrap">
+          <img src="../homepage.jpg" alt="A photo of me" />
+        </div>
+
+        <div class="intro-text">
+          <div>
+            <h1 class="intro-name">Tianchen Huang</h1>
+            <p class="intro-role" style="margin-top: 0.75rem;">Full-Stack Developer</p>
+          </div>
+
+          <div class="intro-bio">
+            <p>
+              Hi there! I'm a full-stack developer who loves building things that sit at the
+              intersection of great engineering and thoughtful design. I care deeply about writing
+              clean code and break large projects into smaller modules that can work independently 
+              from each other.
+            </p>
+            <p>
+              I'm currently pursuing my degree in Data Science, where I've built a strong foundation in data structures, 
+              algorithms, operating systems, and database systems. Through coursework and academic projects, I've developed backend 
+              services using Express and Node.js, designed relational schema using PostgreSQL, and integrated machine learning and 
+              LLM into these full-stack projects.
+            </p>
+            <p>
+              Outside of code, I love playing basketball, hiking 
+              and going to the gym. I believe physical activity is the best duo of coding.
+               I'm also a big fan of classical music, as they can relax me as well as help me stay focus.
+            </p>
+          </div>
+
+          <div class="intro-meta">
+            <div class="meta-item">
+              <span class="meta-label">Based in</span>
+              <span class="meta-value">Your City, Country</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Focus</span>
+              <span class="meta-value">Frontend & Backend</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Education</span>
+              <span class="meta-value">Data Science, Johns Hopkins University</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Interests</span>
+              <span class="meta-value">Go, Basketball, Hiking</span>
+            </div>
+          </div>
+
+          <div class="intro-tags">
+            <span class="tag">Frontend</span>
+            <span class="tag">Backend</span>
+            <span class="tag">Open Source</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">SQL</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECTION 2: SKILLS ── -->
+    <div class="card">
+      <p class="section-label">Skills & Tools</p>
+      <div class="skills-groups">
+
+        <div>
+          <p class="skill-group-label">Languages</p>
+          <div class="skill-icons">
+            <div class="skill-item">
+              <i class="devicon-javascript-plain colored"></i>
+              <span>JavaScript</span>
+            </div>
+            <div class="skill-item">
+              <i class="devicon-python-plain colored"></i>
+              <span>Python</span>
+            </div>
+            <div class="skill-item">
+              <i class="devicon-cplusplus-plain colored"></i>
+              <span>C++</span>
+            </div>
+            <div class="skill-item">
+              <i class="devicon-html5-plain colored"></i>
+              <span>HTML5</span>
+            </div>
+            <div class="skill-item">
+              <i class="devicon-css3-plain colored"></i>
+              <span>CSS3</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="skill-group-label">Frontend</p>
+          <div class="skill-icons">
+            <div class="skill-item">
+              <i class="devicon-react-original colored"></i>
+              <span>React</span>
+            </div>
+            <div class="skill-item">
+              <i class="devicon-webpack-plain colored"></i>
+              <span>Webpack</span>
+            </div>
+            <div class="skill-item">
+              <i class="devicon-tailwindcss-original colored"></i>
+              <span>Tailwind</span>
+            </div>
+            <div class="skill-item">
+              <i class="devicon-vitejs-plain colored"></i>
+              <span>Vite</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="skill-group-label">Backend & Data</p>
+          <div class="skill-icons">
+            <div class="skill-item">
+              <i class="devicon-nodejs-plain colored"></i>
+              <span>Node.js</span>
+            </div>
+            <div class="skill-item">
+              <i class="devicon-express-original colored"></i>
+              <span>Express</span>
+            </div>
+            <div class="skill-item">
+              <i class="devicon-postgresql-plain colored"></i>
+              <span>PostgreSQL</span>
+            </div>
+            <div class="skill-item">
+              <i class="devicon-mysql-original colored"></i>
+              <span>MySQL</span>
+            </div>
+            <div class="skill-item">
+              <i class="devicon-redis-plain colored"></i>
+              <span>Redis</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="skill-group-label">Tools & Platforms</p>
+          <div class="skill-icons">
+            <div class="skill-item">
+              <i class="devicon-git-plain colored"></i>
+              <span>Git</span>
+            </div>
+            <div class="skill-item">
+              <i class="devicon-docker-plain colored"></i>
+              <span>Docker</span>
+            </div>
+            <div class="skill-item">
+              <i class="devicon-github-original"></i>
+              <span>GitHub</span>
+            </div>
+            <div class="skill-item">
+              <i class="devicon-linux-plain"></i>
+              <span>Linux</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <footer>© 2026 Tianchen Huang </footer>
+
+  </div>
+
+  <script>
+    /* ── THEME TOGGLE (syncs with index) ── */
+    const html = document.documentElement;
+    const btn  = document.getElementById('themeToggle');
+    const icon = btn.querySelector('.theme-icon');
+
+    // Read stored preference if any
+    const stored = localStorage.getItem('theme');
+    if (stored) {
+      html.setAttribute('data-theme', stored);
+      icon.textContent = stored === 'dark' ? '☾' : '☀';
+    }
+
+    btn.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      const next = isDark ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      icon.textContent = isDark ? '☀' : '☾';
+      localStorage.setItem('theme', next);
+    });
+  </script>
+</body>
+</html>

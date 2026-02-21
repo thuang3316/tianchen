@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>主页</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <link href="../style.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+
+    <nav>
+      <span class="nav-name">主页</span>
+      <div class="nav-links">
+        <a href="./description-zh.html">简介</a>
+        <a href="./projects-zh.html">项目</a>
+        <a href="../../index.html">English</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="theme-icon">☀</span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="accordion" id="accordion">
+
+      <!-- About -->
+      <div class="card active">
+        <div class="card-inner">
+          <div class="card-header">
+            <h2 class="card-title">简介</h2>
+            <a href="./src/pages/description.html" class="more-link">更多 ↗</a>
+          </div>
+          <div class="card-body">
+            <p class="bio">
+              你好! 我是黄天辰. 
+              我是一名全栈开发者，致力于成为一名专业的软件工程师。
+              我热衷于从零构建完整项目，并享受将各个部分协同整合、最终落地成型的过程。
+            </p>
+            <div class="tags">
+              <span class="tag">前端</span>
+              <span class="tag">后端</span>
+              <span class="tag">JavaScript</span>
+              <span class="tag">NodeJS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projects -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <h2 class="card-title">项目</h2>
+            <a href="./src/pages/projects.html" class="more-link">更多 ↗</a>
+          </div>
+          <div class="card-body">
+            <p class="projects-desc">
+              我覆盖完整的技术栈开发，从精心设计、注重交互体验的前端界面，到面向可靠性与可扩展性的后端架构实现。
+            </p>
+            <div class="project-list">
+              <a href="#" class="project-item">
+                <span class="project-name">购物清单</span>
+                <span class="project-tag">React, Async JS</span>
+                <span class="arrow">→</span>
+              </a>
+              <a href="#" class="project-item">
+                <span class="project-name">个人博客</span>
+                <span class="project-tag">ExpressJS, PostgreSQL</span>
+                <span class="arrow">→</span>
+              </a>
+              <a href="#" class="project-item">
+                <span class="project-name">简介生成器</span>
+                <span class="project-tag">html2pdf, Vite</span>
+                <span class="arrow">→</span>
+              </a>
+              <a href="#" class="project-item">
+                <span class="project-name">Battleship游戏</span>
+                <span class="project-tag">Javascript, Game</span>
+                <span class="arrow">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <h2 class="card-title">联系我</h2>
+          </div>
+          <div class="card-body contact-body">
+            <div class="contact-left">
+              <p class="contact-blurb">
+                如有合作意向或技术交流，欢迎通过邮箱联系我。
+                我会在一至两天内尽快回复。
+              </p>
+              <div class="contact-list">
+                <a href="mailto:tchuang1005@gmail.com" class="contact-item">
+                  <span class="contact-icon">✉</span>
+                  <div class="divider"></div>
+                  <span class="contact-handle">tchuang1005@gmail.com</span>
+                </a>
+                <a href="https://github.com/thuang3316" class="contact-item" target="_blank">
+                  <i class="devicon-github-original"></i>
+                  <div class="divider"></div>
+                  <span class="contact-handle">github/thuang3316</span>
+                </a>
+                <a href="https://www.linkedin.com/in/tianchen-huang-7a399b324/" class="contact-item" target="_blank">
+                  <i class="devicon-linkedin-plain colored"></i>
+                  <div class="divider"></div>
+                  <span class="contact-handle">linkedin/tianchen-huang</span>
+                </a>
+              </div>
+            </div>
+            <div class="contact-right">
+              <div class="availability-card">
+                <div class="avail-dot"></div>
+                <div>
+                  <div class="avail-label">正在寻找</div>
+                  <div class="avail-items">
+                    <span class="avail-tag">实习</span>
+                    <span class="avail-tag">全职工作</span>
+                    <span class="avail-tag">项目合作</span>
+                  </div>
+                </div>
+              </div>
+              <div class="location-card">
+                <span class="location-icon">◎</span>
+                <div>
+                  <div class="location-city">巴尔的摩，美国</div>
+                  <div class="location-time" id="localTime">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>© 2026 黄天辰 </footer>
+
+  </div>
+
+  <script>
+    const COLLAPSED_H = 72; 
+    const DURATION    = 360; 
+
+    const cards = document.querySelectorAll('.card');
+    let activeCard = cards[0];
+    let animating  = false;
+
+    function getExpandedHeight(card) {
+      card.style.overflow = 'visible';
+      card.style.height   = 'auto';
+      const h = card.scrollHeight;
+      card.style.overflow = 'hidden';
+      return h;
+    }
+
+    function collapse(card) {
+      card.style.height   = card.scrollHeight + 'px'; 
+      card.classList.remove('active');
+      card.offsetHeight;
+      card.style.height = COLLAPSED_H + 'px';
+    }
+
+    function expand(card) {
+      const targetH = getExpandedHeight(card);
+      card.style.height = COLLAPSED_H + 'px';
+      card.classList.add('active');
+      card.offsetHeight; 
+      card.style.height = targetH + 'px';
+
+      const tid = setTimeout(() => {
+        card.style.height   = 'auto';
+        card.style.overflow = 'visible';
+      }, DURATION);
+      card._expandTimer = tid;
+    }
+
+    function setActive(card) {
+      if (card === activeCard || animating) return;
+      animating = true;
+      clearTimeout(activeCard._expandTimer);
+
+      collapse(activeCard);
+      expand(card);
+      activeCard = card;
+
+      setTimeout(() => { animating = false; }, DURATION);
+    }
+
+    cards.forEach(card => {
+      if (card === activeCard) {
+        card.style.height   = 'auto';
+        card.style.overflow = 'visible';
+      } else {
+        card.style.height   = COLLAPSED_H + 'px';
+        card.style.overflow = 'hidden';
+      }
+      card.addEventListener('mouseenter', () => setActive(card));
+    });
+
+    const html = document.documentElement;
+    const btn  = document.getElementById('themeToggle');
+    const icon = btn.querySelector('.theme-icon');
+
+    btn.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      icon.textContent = isDark ? '☀' : '☾';
+    });
+
+    function updateTime() {
+      const el = document.getElementById('localTime');
+      if (!el) return;
+      el.textContent = new Date().toLocaleTimeString('en-US', {
+        hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short'
+      });
+    }
+    updateTime();
+    setInterval(updateTime, 1000);
+  </script>
+</body>
+</html>
